@@ -7,10 +7,17 @@ public class PlayerRPG : MonoBehaviour
 {
     public float health = 100f;
     public float attackDamage = 5f;
+    public float bulletDamage = 10f;
     public float attackInterval = 1f;
 
     private float timer;
     private bool isAttackReady = true;
+
+    public GameObject bulletPrefab;
+
+    public Transform bulletSpawn;
+
+    public float bulletForce = 500f;
 
     public Image attackReadyImage;
 
@@ -34,11 +41,11 @@ public class PlayerRPG : MonoBehaviour
                 timer = 0f;
             }
         }
-        
 
-        if(Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0))
         {
-            if(isAttackReady == true)
+            if (isAttackReady == true)
             {
                 RaycastHit hit;
 
@@ -46,12 +53,25 @@ public class PlayerRPG : MonoBehaviour
                 {
                     BaseEnemy enemy = hit.collider.GetComponent<BaseEnemy>();
 
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        enemy.TakeDamage(10);
+                    }
                     if (enemy != null)
                     {
                         Attack(enemy);
                     }
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
+            bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletForce);
+
+            onCollisionEnter                            ();
+
+            Destroy(bullet, 5f);
         }
     }
 
@@ -62,6 +82,13 @@ public class PlayerRPG : MonoBehaviour
         attackReadyImage.gameObject.SetActive(isAttackReady);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("damage takne from bullet");
+        }
+    }
     public void TakeDamage(float damage)
     {
         health -= damage;
