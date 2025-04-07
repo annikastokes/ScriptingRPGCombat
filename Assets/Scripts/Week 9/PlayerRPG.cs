@@ -69,9 +69,13 @@ public class PlayerRPG : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
             bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletForce);
 
-            onCollisionEnter                            ();
+            Destroy(bullet, 3f);
+        }
+            if (enemy != null)
+            {
+                Attack(enemy);
+            }
 
-            Destroy(bullet, 5f);
         }
     }
 
@@ -86,6 +90,7 @@ public class PlayerRPG : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy")
         {
+            enemy.TakeDamage(10);
             Debug.Log("damage takne from bullet");
         }
     }
