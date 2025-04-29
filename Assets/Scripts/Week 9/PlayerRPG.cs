@@ -53,8 +53,10 @@ public class PlayerRPG : MonoBehaviour
                 {
                     BaseEnemy enemy = hit.collider.GetComponent<BaseEnemy>();
 
-                      enemy.TakeDamage(10);
-                    
+                    if (hit.collider.tag == "Enemy")
+                    {
+                        enemy.TakeDamage(10);
+                    }
                     if (enemy != null)
                     {
                         Attack(enemy);
@@ -62,19 +64,18 @@ public class PlayerRPG : MonoBehaviour
                 }
             }
         }
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
             bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * bulletForce);
 
             Destroy(bullet, 3f);
-
-            OnCollisionEnter
         }
-        if (enemy != null)
-        {
-            Attack(enemy);
+            if (enemy != null)
+            {
+                Attack(enemy);
+            }
+
         }
     }
 
@@ -103,4 +104,3 @@ public class PlayerRPG : MonoBehaviour
         }
     }
 }
-
