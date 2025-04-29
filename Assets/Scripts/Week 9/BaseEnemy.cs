@@ -34,7 +34,7 @@ public class BaseEnemy : MonoBehaviour
 
     protected virtual void Attack()
     {
-        player.TakeDamage(attackDamage);
+       // player.TakeDamage(attackDamage);
     }
 
     public virtual void Move()
